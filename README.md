@@ -38,6 +38,7 @@
 * [`Await for specific module to load`](#await-for-condition)
 * [`Webview URLS`](#webview-urls)
 * [`Print all runtime strings & stacktrace`](#print-runtime-strings)
+* [`Print shared preferences updates`](#Print-shared-preferences-updates)
 * [`String comparison`](#string-comparison)
 * [`Hook JNI by address`](#hook-jni-by-address)
 * [`Hook constructor`](#hook-constructor)
@@ -1417,6 +1418,56 @@ TODO
 </details>
 
 <br>[⬆ Back to top](#table-of-contents)
+
+#### Print shared preferences updates
+
+
+```js
+Java.perform(function() {
+    var shared_pref_class = Java.use('android.app.SharedPreferencesImpl$EditorImpl');
+
+    shared_pref_class.putString.overload('java.lang.String', 'java.lang.String').implementation = function(k, v) {
+        console.log('Shared preference updated: ', k, '=', v);
+        return this.putString(k, v);
+    }
+
+    shared_pref_class.putInt.overload('java.lang.String', 'int').implementation = function(k, v) {
+        console.log('Shared preference updated: ', k, '=', v);
+        return this.putInt(k, v);
+    }
+
+
+    shared_pref_class.putFloat.overload('java.lang.String', 'float').implementation = function(k, v) {
+        console.log('Shared preference updated: ', k, '=', v);
+        return this.putFloat(k, v);
+    }
+
+    shared_pref_class.putBoolean.overload('java.lang.String', 'boolean').implementation = function(k, v) {
+        console.log('Shared preference updated: ', k, '=', v);
+        return this.putBoolean(k, v);
+    }
+
+    shared_pref_class.putLong.overload('java.lang.String', 'long').implementation = function(k, v) {
+        console.log('Shared preference updated: ', k, '=', v);
+        return this.putLong(k, v);
+    }
+
+    shared_pref_class.putStringSet.overload('java.lang.String', java.util.Set).implementation = function(k, v) {
+        console.log('Shared preference updated: ', k, '=', v);
+        return this.putStringSet(k, v);
+    }
+});
+```
+
+<details>
+<summary>Output example</summary>
+TODO
+</details>
+
+<br>[⬆ Back to top](#table-of-contents)
+
+
+
 
 #### String comparison
 
